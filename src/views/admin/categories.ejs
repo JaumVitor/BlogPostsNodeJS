@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../partials/head') %>
+  <body>
+    <%- include('../partials/navbar') %>
+    <div class="wrapper">
+      <span>
+        <h2>Listas de categorias</h2>
+      </span>
+
+      <ul class="category-description">
+        <% category.forEach((cat) => { %>
+        <li>
+          <h3><%= cat.name_category %></h3>
+          <p><%= cat.slug %></p>
+        </li>
+        <% }); %>
+      </ul>
+
+      <a href="/admin/categories/add">
+        <button>Criar</button>
+      </a>
+    </div>
+  </body>
+</html>
