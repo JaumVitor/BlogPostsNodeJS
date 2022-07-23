@@ -4,11 +4,16 @@
   <body>
     <%- include('../partials/navbar') %>
     <div class="wrapper">
+      <% err.forEach((e) =>{ %>
+      <div class="alert-message"><%= e.message %></div>
+      <% }) %>
+
       <span>
         <h2>Adicionar categoria</h2>
+        <hr />
       </span>
 
-      <form action="/admin/categories/add/new" method="post">
+      <form action="/admin/categories/add" method="post">
         <label for="name">
           Name:
           <input
@@ -24,7 +29,7 @@
           <input id="slug" name="slug" type="text" placeholder="Nome slug" />
         </label>
 
-        <button type="submit">Adicionar</button>
+        <button class="button-add" type="submit"><p>Adicionar</p></button>
       </form>
     </div>
   </body>

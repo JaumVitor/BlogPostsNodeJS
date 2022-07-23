@@ -4,22 +4,34 @@
   <body>
     <%- include('../partials/navbar') %>
     <div class="wrapper">
-      <span>
-        <h2>Listas de categorias</h2>
-      </span>
+      <% if (success.length > 0) { %>
+        <div class="success-message">
+          <%= success %>
+        </div>
+      <% } %> 
 
+      <div class='list-category'>
+        <h2>Listas de categorias</h2>
+        <a href="/admin/categories/add">
+          <button class="button-create"><p>Criar categoria</p></button>
+        </a>
+      </div>
+      <hr>
+     
       <ul class="category-description">
         <% category.forEach((cat) => { %>
         <li>
-          <h3><%= cat.name_category %></h3>
+          <div class="header-category">
+            <h3><%= cat.name_category %></h3>
+            <button class="button-delete"><p>Deletar</p></button>
+          </div>
           <p><%= cat.slug %></p>
+          <small><%= cat.date %></p></small>
         </li>
         <% }); %>
       </ul>
 
-      <a href="/admin/categories/add">
-        <button>Criar</button>
-      </a>
     </div>
   </body>
+  <%- include('../partials/footer') %>
 </html>
