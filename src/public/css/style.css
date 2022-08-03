@@ -114,6 +114,9 @@ button:hover {
   box-shadow: 0 0 3px rgb(197, 216, 197), 0 0 8px rgb(120, 230, 120);
 }
 
+button a {
+  color: white;
+}
 button p {
   text-shadow: 1px 1px 2px black;
 }
@@ -153,7 +156,7 @@ label:nth-child(2) {
 }
 
 input {
-  width: 30rem;
+  width: 100%;
   padding-left: 1rem;
   border-radius: 0.5rem;
   border-style: none;
@@ -193,6 +196,17 @@ input {
 
 .category-description li:nth-child(odd) {
   background: rgb(239, 216, 255);
+}
+
+.category-editing {
+  background: rgb(244, 241, 247);
+  padding: 2rem;
+  border-radius: 0.5rem;
+  color: grey;
+}
+.category-editing small {
+  color: gray;
+  text-shadow: 1px 1px 2px rgb(73, 73, 73);
 }
 
 .header-category {

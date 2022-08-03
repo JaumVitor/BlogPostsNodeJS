@@ -9,25 +9,29 @@
       <% }) %>
 
       <span>
-        <h2>Adicionar categoria</h2>
+        <h2>Editar categoria</h2>
         <hr />
       </span>
 
-      <form action="/admin/categories/add" method="post">
+      <div class="category-editing">
+        <h3><%= category.name_category %></h3>
+        <p><%= category.slug %></p>
+        <small><%= category.date %></p></small>
+      </div>
+
+      <form action="/admin/categories/edit/<%= category.id %>" method="post">
         <label for="name">
-          Name:
+          <p>Novo nome:</p>
           <input id="name" name="name" type="text" placeholder="Nome categoria" />
         </label>
     
-        <label for="slug"
-          >Slug:
+        <label for="slug">
+          <p>Novo slug:</p>
           <input id="slug" name="slug" type="text" placeholder="Nome slug" />
         </label>
     
-        <button class="button-add" type="submit">Adicionar</button>
+        <button class="button-add" type="submit">Editar</button>
       </form>
-    </form>
-    
     </div>
   </body>
 </html>
