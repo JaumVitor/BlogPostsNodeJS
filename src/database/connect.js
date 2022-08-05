@@ -5,7 +5,7 @@ const connectionDataBase = async () => {
     `mongodb+srv://Jaum_https:HesoyamH123@cursonodejs.a2ouj.mongodb.net/NodePostsApp?retryWrites=true&w=majority`,
     err => {
       if (err) {
-        return console.log('Erro ao tentar se conectar com o banco ' + erro)
+        return console.log('Erro ao tentar se conectar com o banco ' + err)
       }
 
       return console.log('Conexão realizada com sucesso!')

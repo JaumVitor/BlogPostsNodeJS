@@ -23,7 +23,13 @@
         <li>
           <div class="header-category">
             <h3><%= cat.name_category %></h3>
-            <button><a href="/admin/categories/edit/<%= cat._id %>">Editar</a></button>
+            <div class="buttons">
+              <a class="button-edit" href="/admin/categories/edit/<%= cat.id %>">Editar</a>
+
+              <form method="post" class="form-submit" action="/admin/categories/delete/<%= cat.id %>">
+                <button type="submit" class="button-delete">Delete</button>
+              </form>
+            </div>
           </div>
           <p><%= cat.slug %></p>
           <small><%= cat.date %></p></small>

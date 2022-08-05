@@ -99,6 +99,7 @@ router.get('/categories/edit/:id', async (req, res) => {
 
 // Editando categorias que foram clicadas ("edit")
 router.post('/categories/edit/:id', async (req, res) => {
+  console.log('Editando categoria')
   const err = verifyErrorInputForm(req)
   const id = req.params.id
 
@@ -130,5 +131,22 @@ router.post('/categories/edit/:id', async (req, res) => {
       })
   }
 })
+
+router.post('/categories/delete/:id', async (req, res) => {
+  // Deletando categorias
+  const id = req.params.id
+  await CategoryModel.findByIdAndDelete(id)
+    .then(() => {
+      req.flash('success', `Categoria ID: ${id} Deletada com sucesso!`)
+      res.redirect('/admin/categories')
+    })
+    .catch(error => {
+      res.send('error', error.message)
+    })
+})
+
+// router.get('/posts', (req, res) => {
+//   res.render('admin/posts')
+// })
 
 module.exports = router
