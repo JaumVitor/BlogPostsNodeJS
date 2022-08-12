@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <%- include('../partials/head') %>
+  <body>
+    <%- include('../partials/navbar') %>
+      <%- include('../partials/success') %>
+
+      <div class="wrapper">
+        <div class="list-posts">
+          <h2>Listando Postagens</h2>
+          <a href="/admin/posts/add">
+            <button class="button-create">Criar postagem</button>
+          </a>
+        </div>
+        <hr />
+        <ul class="category-description">
+          <% posts.forEach((post) => { %>
+          <li>
+            <div class="header-category">
+              <h3><%= post.title %></h3>
+            </div>
+            <p><strong>Descrição:</strong> <%= post.description %></p>
+            <p><strong>Conteudo:</strong> <%= post.content %></p>
+            <div class="category-posts">
+              <strong>Categoria:</strong> <%= post.category.name_category %>
+            </div>
+            <small><%= post.date %></small>
+          </li>
+          <% }); %>
+        </ul>
+      </div>
+    </div>
+      
+    <%- include('../partials/footer') %>
+  </body>
+</html>

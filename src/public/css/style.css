@@ -44,8 +44,7 @@ hr {
   margin: 1rem;
 }
 
-li,
-.logo {
+li {
   list-style-type: none;
   color: white;
 }
@@ -75,6 +74,10 @@ li,
 }
 
 .button-add {
+  margin-top: 2rem;
+}
+
+.button-create-posts {
   margin-top: 2rem;
 }
 
@@ -157,12 +160,12 @@ li,
 form {
   background: var(--background-category);
   margin-top: 3rem;
-
   padding: 2rem;
   border-radius: 0.4rem;
+
   display: flex;
+  gap: 1rem;
   flex-direction: column;
-  gap: 2rem;
   box-shadow: 2px 3px 5px #200455;
 }
 
@@ -175,15 +178,30 @@ form {
 }
 
 label {
-  text-transform: uppercase;
-  display: flex;
+  text-transform: capitalize;
+  display: block;
   color: rgb(226, 195, 255);
   text-shadow: 2px 2px 3px #200455;
   font-weight: bold;
 }
 
-label:nth-child(1) {
-  gap: 1rem;
+textarea {
+  resize: none;
+  border: none;
+  border-radius: 0.4rem;
+  box-shadow: 1px 1px 2px #200455;
+  padding: 0.5rem;
+  width: 100%;
+  outline: none;
+}
+
+select {
+  border: none;
+  border-radius: 0.4rem;
+  box-shadow: 1px 1px 2px #200455;
+  padding: 0.5rem;
+  width: 100%;
+  outline: none;
 }
 
 small {
@@ -192,13 +210,9 @@ small {
   font-size: 1.2rem;
 }
 
-label:nth-child(2) {
-  gap: 1.5rem;
-}
-
 input {
   width: 100%;
-  padding-left: 1rem;
+  padding: 0.5rem;
   border-radius: 0.5rem;
   border-style: none;
   outline: none;
@@ -206,7 +220,8 @@ input {
   box-shadow: 1px 1px 2px #200455;
 }
 
-.list-category {
+.list-category,
+.list-posts {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -225,6 +240,7 @@ input {
   color: black;
   padding: 1rem 2rem;
   border: 1px solid var(--background-category);
+  box-shadow: 1px 1px 4px #200455a9;
 }
 
 .category-description li:nth-child(1) {
@@ -251,10 +267,24 @@ input {
   text-shadow: 1px 1px 2px rgb(73, 73, 73);
 }
 
+.category-posts {
+  background: var(--border-category);
+
+  color: white;
+  text-shadow: 1px 1px 5px rgb(80, 51, 99);
+
+  padding: 0.5rem;
+  margin: 2rem 0 1rem;
+
+  border-radius: 0.4rem;
+  border: 1px solid rgb(167, 131, 202);
+}
+
 .header-category {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 1.5rem;
 }
 
 .alert-message {

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <%- include('../partials/head') %>
+  <body>
+    <%- include('../partials/navbar') %>
+
+    <div class="wrapper">
+      <h2>Adicionar Postagem</h2>
+      <hr />
+      <form action="/admin/posts/add" method="POST">
+        <label class="label-posts" for="title">
+          Título:
+          <input type="text" name="title" placeholder="Titulo" required />
+        </label>
+
+        <label class="label-posts" for="description">
+          Descrição:
+          <textarea
+            name="description"
+            placeholder="Descrição"
+            required
+          ></textarea>
+        </label>
+
+        <label class="label-posts" for="content">
+          Conteudo:
+          <textarea
+            name="content"
+            placeholder="Conteudo"
+            required
+          ></textarea>
+        </label>
+
+        <label class="label-posts" for="category">
+          Categoria:
+          <select name="category">
+            <% if (categories) { %>
+              <% categories.forEach((category) => { %>
+                <option value="<%= category.id %>">
+                <%= category.name_category %>
+                </option>
+              <% }); %>
+            <% } else { %>
+              <option value="0">Nenhuma categoria cadastrada</option>
+            <% } %>
+          </select>
+        </label>
+
+        <button class="button-create button-create-posts" type="submit">
+          Criar postagem
+        </button>
+      </form>
+    </div>
+  </body>
+</html>

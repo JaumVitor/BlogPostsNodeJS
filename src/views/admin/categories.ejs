@@ -3,41 +3,35 @@
   <%- include('../partials/head') %>
   <body>
     <%- include('../partials/navbar') %>
-    <div class="wrapper">
-      <% if (success.length > 0) { %>
-        <div class="success-message">
-          <%= success %>
+      <%- include('../partials/success') %>
+
+      <div class="wrapper">
+        <div class='list-category'>
+          <h2>Listas de categorias</h2>
+          <a href="/admin/categories/add">
+            <button class="button-create"><p>Criar categoria</p></button>
+          </a>
         </div>
-      <% } %> 
-
-      <div class='list-category'>
-        <h2>Listas de categorias</h2>
-        <a href="/admin/categories/add">
-          <button class="button-create"><p>Criar categoria</p></button>
-        </a>
-      </div>
-      <hr>
-     
-      <ul class="category-description">
-        <% category.forEach((cat) => { %>
-        <li>
-          <div class="header-category">
-            <h3><%= cat.name_category %></h3>
-            <div class="buttons">
-              <a class="button-edit" href="/admin/categories/edit/<%= cat.id %>">Editar</a>
-
-              <form method="post" class="form-submit" action="/admin/categories/delete/<%= cat.id %>">
-                <button type="submit" class="button-delete">Delete</button>
-              </form>
+        <hr>
+        <ul class="category-description">
+          <% category.forEach((cat) => { %>
+          <li>
+            <div class="header-category">
+              <h3><%= cat.name_category %></h3>
+              <div class="buttons">
+                <a class="button-edit" href="/admin/categories/edit/<%= cat.id %>">Editar</a>
+                <form method="post" class="form-submit" action="/admin/categories/delete/<%= cat.id %>">
+                  <button type="submit" class="button-delete">Delete</button>
+                </form>
+              </div>
             </div>
-          </div>
-          <p><%= cat.slug %></p>
-          <small><%= cat.date %></p></small>
-        </li>
-        <% }); %>
-      </ul>
+            <p><%= cat.slug %></p>
+            <small><%= cat.date %></p></small>
+          </li>
+          <% }); %>
+        </ul>
+      </div>
 
-    </div>
+    <%- include('../partials/footer') %>
   </body>
-  <%- include('../partials/footer') %>
 </html>

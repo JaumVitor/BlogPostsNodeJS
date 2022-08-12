@@ -1,3 +1,14 @@
+const express = require('express')
+const { restart } = require('nodemon')
+const router = express.Router()
+
+// Realizando a conexão com o banco de dados
+const connectionDataBase = require('../database/connect')
+connectionDataBase()
+
+const CategoryModel = require('../database/models/category.model')
+const PostModel = require('../database/models/post.model')
+
 const verifyErrorInputForm = req => {
   // Validando inputs do formulario, caso haja erro seta valor no array de erros
   const err = []
@@ -22,16 +33,6 @@ const verifyErrorInputForm = req => {
   }
   return err
 }
-
-const express = require('express')
-const { restart } = require('nodemon')
-const router = express.Router()
-
-// Realizando a conexão com o banco de dados
-const connectionDataBase = require('../database/connect')
-connectionDataBase()
-
-const CategoryModel = require('../database/models/category.model')
 
 // Rotas admin
 router.get('/', (req, res) => {
@@ -145,8 +146,45 @@ router.post('/categories/delete/:id', async (req, res) => {
     })
 })
 
-// router.get('/posts', (req, res) => {
-//   res.render('admin/posts')
-// })
+router.get('/posts', async (req, res) => {
+  // Populate para trazer os dados referentes a categoria
+  const posts = await PostModel.find({})
+    .populate('category')
+    .sort({ date: 'desc' })
+
+  // Preciso verificar se a categoria não foi excluida, antes de tentar busca-la
+  posts.forEach((post, i) => {
+    if (post.category == null) {
+      post.category = { name_category: 'Categoria excluida' }
+    }
+  })
+
+  res.render('admin/posts', { posts })
+})
+
+router.get('/posts/add', async (req, res) => {
+  const categories = await CategoryModel.find({})
+  res.render('admin/postsAdd', { categories })
+})
+
+router.post('/posts/add', async (req, res) => {
+  const idCategory = req.body.category
+  const category = await CategoryModel.findById(idCategory)
+
+  const post = {
+    title: req.body.title,
+    description: req.body.description,
+    content: req.body.content,
+    category: category
+  }
+
+  await PostModel.create(post)
+    .then(() => {
+      req.flash('success', 'Post criado com sucesso!')
+      res.redirect('/admin/posts')
+    }).catch(err => {
+      console.log(err.message)
+    })
+})
 
 module.exports = router
