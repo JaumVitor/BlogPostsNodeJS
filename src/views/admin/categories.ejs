@@ -14,21 +14,27 @@
         </div>
         <hr>
         <ul class="category-description">
-          <% category.forEach((cat) => { %>
-          <li>
-            <div class="header-category">
-              <h3><%= cat.name_category %></h3>
-              <div class="buttons">
-                <a class="button-edit" href="/admin/categories/edit/<%= cat.id %>">Editar</a>
-                <form method="post" class="form-submit" action="/admin/categories/delete/<%= cat.id %>">
-                  <button type="submit" class="button-delete">Delete</button>
-                </form>
-              </div>
-            </div>
-            <p><%= cat.slug %></p>
-            <small><%= cat.date %></p></small>
-          </li>
-          <% }); %>
+          <% if (category.length > 0) { %> 
+            <% category.forEach((cat) => { %>
+              <li>
+                <div class="header">
+                  <h3><%= cat.name_category %></h3>
+                  <div class="buttons">
+                    <a class="button-edit" href="/admin/categories/edit/<%= cat.id %>">Editar</a>
+                    <form method="post" class="form-submit" action="/admin/categories/delete/<%= cat.id %>">
+                      <button type="submit" class="button-delete">Delete</button>
+                    </form>
+                  </div>
+                </div>
+                <p><%= cat.slug %></p>
+                <small><%= cat.date %></p></small>
+              </li>
+            <% }); %>
+          <% } else { %>
+            <li>
+              <p>Não há categorias cadastradas</p>
+            </li>
+          <% } %>
         </ul>
       </div>
 

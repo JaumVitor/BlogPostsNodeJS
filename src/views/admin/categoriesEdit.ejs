@@ -4,9 +4,7 @@
   <body>
     <%- include('../partials/navbar') %>
     <div class="wrapper">
-      <% err.forEach((e) =>{ %>
-      <div class="alert-message"><%= e.message %></div>
-      <% }) %>
+      <%- include('../partials/err') %>
 
       <span>
         <h2>Editar categoria</h2>

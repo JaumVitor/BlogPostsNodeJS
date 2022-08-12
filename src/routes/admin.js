@@ -9,7 +9,7 @@ connectionDataBase()
 const CategoryModel = require('../database/models/category.model')
 const PostModel = require('../database/models/post.model')
 
-const verifyErrorInputForm = req => {
+const verifyErrorInputFormCategory = req => {
   // Validando inputs do formulario, caso haja erro seta valor no array de erros
   const err = []
   if (
@@ -34,11 +34,57 @@ const verifyErrorInputForm = req => {
   return err
 }
 
+const verifyErrorInputFormPost = req => {
+  const err = []  
+  if (
+    !req.body.title ||
+    typeof req.body.title == undefined ||
+    req.body.title == null
+  ) {
+    err.push({
+      message: 'Titulo invalido!'
+    })
+  }
+
+  if (
+    !req.body.description ||
+    typeof req.body.description == undefined ||
+    req.body.description == null
+  ) {
+    err.push({
+      message: 'Descrição invalida!'
+    })
+  }
+
+  if (
+    !req.body.content ||
+    typeof req.body.content == undefined ||
+    req.body.content == null
+  ) {
+    err.push({
+      message: 'Conteudo invalido!'
+    })
+  }
+
+  if (
+    !req.body.category ||
+    typeof req.body.category == undefined ||
+    req.body.category == null
+  ) {
+    err.push({
+      message: 'Categoria invalida!'
+    })
+  }
+
+  return err
+}
+
 // Rotas admin
 router.get('/', (req, res) => {
   res.render('admin/index')
 })
 
+// ---------------Category---------------
 router.get('/categories', async (req, res) => {
   const category = await CategoryModel.find({}).sort({ date: 'desc' })
 
@@ -55,7 +101,7 @@ router.get('/categories/add', (req, res) => {
 
 // endpoint da adição de categorias
 router.post('/categories/add', async (req, res) => {
-  const err = verifyErrorInputForm(req)
+  const err = verifyErrorInputFormCategory(req)
   if (err.length > 0) {
     err.push({
       message: 'Categoria não foi cadastrada!'
@@ -100,8 +146,7 @@ router.get('/categories/edit/:id', async (req, res) => {
 
 // Editando categorias que foram clicadas ("edit")
 router.post('/categories/edit/:id', async (req, res) => {
-  console.log('Editando categoria')
-  const err = verifyErrorInputForm(req)
+  const err = verifyErrorInputFormCategory(req)
   const id = req.params.id
 
   if (err.length > 0) {
@@ -146,6 +191,7 @@ router.post('/categories/delete/:id', async (req, res) => {
     })
 })
 
+// ---------------Posts---------------
 router.get('/posts', async (req, res) => {
   // Populate para trazer os dados referentes a categoria
   const posts = await PostModel.find({})
@@ -168,22 +214,101 @@ router.get('/posts/add', async (req, res) => {
 })
 
 router.post('/posts/add', async (req, res) => {
-  const idCategory = req.body.category
-  const category = await CategoryModel.findById(idCategory)
+  const err = verifyErrorInputFormPost(req)
+  
+  if (err.length > 0) {
+    // Caso exista erros adiciona todos nas variaveis globais
+    err.push({
+      message: 'Categoria não foi editada!'
+    })
+    // Inserindo erros na variavel global de erros, definida no meu middleware
+    err.forEach(e => {
+      req.flash('err', e)
+    })
+    res.redirect('/admin/posts/add')
 
-  const post = {
-    title: req.body.title,
-    description: req.body.description,
-    content: req.body.content,
-    category: category
+  } else {
+    const idCategory = req.body.category
+    const category = await CategoryModel.findById(idCategory)
+
+    const post = {
+      title: req.body.title,
+      description: req.body.description,
+      content: req.body.content,
+      category: category
+    }
+
+    await PostModel.create(post)
+      .then(() => {
+        req.flash('success', 'Post criado com sucesso!')
+        res.redirect('/admin/posts')
+      })
+      .catch(err => {
+        console.log('Post não criado' + err.message)
+      })
   }
+})
 
-  await PostModel.create(post)
+// Criando a rota de edição de posts
+router.get('/posts/edit/:id', async (req, res) => {
+  const id = req.params.id
+  const post = await PostModel.findById(id).populate('category')
+  const categories = await CategoryModel.find({})
+
+  if (post.category == null) {
+    post.category = { name_category: 'Categoria excluida' }
+  }
+  
+  res.render('admin/postsEdit', { post, categories })
+})
+
+router.post('/posts/edit/:id', async (req, res) => {
+  const err = verifyErrorInputFormPost(req)
+  
+  if (err.length > 0) {
+    // Caso exista erros adiciona todos nas variaveis globais
+    err.push({
+      message: 'Categoria não foi editada!'
+    })
+    // Inserindo erros na variavel global de erros, definida no meu middleware
+    err.forEach(e => {
+      req.flash('err', e)
+    })
+    res.redirect('/admin/posts/edit/' + req.params.id)
+
+  } else {
+    const id  = req.params.id
+    const idCategory = req.body.category
+    const category = await CategoryModel.findById(idCategory) 
+    
+    post = {
+      title: req.body.title,
+      description: req.body.description,
+      content: req.body.content,
+      category: category
+    }
+  
+    await PostModel.findByIdAndUpdate(id, post, { new: true })
+      .then(() => {
+        req.flash('success', 'Post editado com sucesso!')
+        res.redirect('/admin/posts')
+      }).catch(err => {
+        req.flash('err', 'Post não foi editado!')
+        res.redirect('/admin/posts')
+      })
+  }
+})
+
+// Criando rota de deletar posts
+router.post('/posts/delete/:id', async (req, res) => {
+  const id = req.params.id
+  await PostModel.findByIdAndDelete(id)
     .then(() => {
-      req.flash('success', 'Post criado com sucesso!')
+      req.flash('success', `Post ID: ${id} Deletado com sucesso!`)
       res.redirect('/admin/posts')
-    }).catch(err => {
-      console.log(err.message)
+    })
+    .catch(error => {
+      res.send('error', error.message)
     })
 })
 

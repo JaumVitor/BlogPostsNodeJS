@@ -1,15 +1,31 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
   <%- include('../partials/head') %>
   <body>
     <%- include('../partials/navbar') %>
-
     <div class="wrapper">
-      <%- include('../partials/err') %>
+     <%- include('../partials/err') %>
 
-      <h2>Adicionar Postagem</h2>
-      <hr />
-      <form action="/admin/posts/add" method="POST">
+      <span>
+        <h2>Editar Postagem</h2>
+        <hr />
+      </span>
+
+      <div class="post-editing">
+        <h3><%= post.title %></h3>
+        <p>
+          <strong>Descrição:</strong> <%= post.description %>
+        </p>
+        <p>
+          <strong>Conteudo:</strong> <%= post.content %>
+        </p>
+        <div class="category-post-editing">
+          <strong>Categoria:</strong> <%= post.category.name_category %>
+        </div>
+        <small class="editing"><%= post.date %></small>
+      </div>
+
+      <form action="/admin/posts/edit/<%= post.id %>" method="POST">
         <label class="label-posts" for="title">
           Título:
           <input type="text" name="title" placeholder="Titulo" />
@@ -45,11 +61,13 @@
             <% } %>
           </select>
         </label>
-
+        
         <button class="button-create button-create-posts" type="submit">
-          Criar postagem
+          Editar postagem
         </button>
       </form>
     </div>
   </body>
+
+  <%- include('../partials/footer') %>
 </html>

@@ -210,6 +210,11 @@ small {
   font-size: 1.2rem;
 }
 
+small.editing {
+  color: gray;
+  text-shadow: 1px 1px 2px rgb(94, 94, 94);
+}
+
 input {
   width: 100%;
   padding: 0.5rem;
@@ -255,13 +260,15 @@ input {
   background: rgb(239, 216, 255);
 }
 
-.category-editing {
+.category-editing,
+.post-editing {
   background: rgb(244, 241, 247);
   padding: 2rem;
   border-radius: 0.5rem;
   color: grey;
   border: 1px solid rgb(219, 219, 219);
 }
+
 .category-editing small {
   color: gray;
   text-shadow: 1px 1px 2px rgb(73, 73, 73);
@@ -280,7 +287,18 @@ input {
   border: 1px solid rgb(167, 131, 202);
 }
 
-.header-category {
+.category-post-editing {
+  background: rgb(206, 206, 206);
+  color: white;
+  text-shadow: 1px 1px 5px rgb(80, 51, 99);
+
+  padding: 0.5rem;
+  margin: 1rem 0 1rem;
+
+  border-radius: 0.4rem;
+}
+
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -296,8 +314,8 @@ input {
   font-size: 1.5rem;
 }
 
-.alert-message:nth-child(3) {
-  margin-bottom: 3rem;
+.containter-alerts .alert-message:last-child{
+  margin-bottom: 2rem;
 }
 
 .success-message {
