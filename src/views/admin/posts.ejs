@@ -3,13 +3,10 @@
   <%- include('../partials/head') %>
   <body>
     <%- include('../partials/navbar') %>
-      <%- include('../partials/success') %>
-      
-      <% err.forEach((e) =>{ %>
-        <div class="alert-message"><%= e.message %></div>
-      <% }) %>
-
-      <div class="wrapper">
+    
+    <div class="wrapper">
+        <%- include('../partials/success') %>
+        <%- include('../partials/err') %>
         <div class="list-posts">
           <h2>Listando Postagens</h2>
           <a href="/admin/posts/add">

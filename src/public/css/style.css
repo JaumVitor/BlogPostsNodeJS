@@ -215,6 +215,12 @@ small.editing {
   text-shadow: 1px 1px 2px rgb(94, 94, 94);
 }
 
+small.suggestion {
+  color: orange;
+  text-shadow: 2px 2px 3px #200455;
+  text-transform: uppercase;
+}
+
 input {
   width: 100%;
   padding: 0.5rem;

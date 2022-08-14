@@ -37,7 +37,7 @@ app.use('/', (req, res, next) => {
 
 app.get('/', (req, res) => {
   req.flash('flash', 'Testando outro valor')
-  console.log(res.locals.flashUse)
+  // console.log(res.locals.flashUse)
   res.send('teste')
 })
 

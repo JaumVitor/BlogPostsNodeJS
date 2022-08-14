@@ -34,7 +34,7 @@ const verifyErrorInputFormCategory = req => {
   return err
 }
 
-const verifyErrorInputFormPost = req => {
+const verifyErrorInputFormPost = (req, reqLocal) => {
   const err = []  
   if (
     !req.body.title ||
@@ -69,10 +69,11 @@ const verifyErrorInputFormPost = req => {
   if (
     !req.body.category ||
     typeof req.body.category == undefined ||
-    req.body.category == null
+    req.body.category == null || 
+    (req.body.category == '0' && reqLocal != 'edit')
   ) {
     err.push({
-      message: 'Categoria invalida!'
+      message: 'Não existe categoria cadastrada'
     })
   }
 
@@ -201,7 +202,7 @@ router.get('/posts', async (req, res) => {
   // Preciso verificar se a categoria não foi excluida, antes de tentar busca-la
   posts.forEach((post, i) => {
     if (post.category == null) {
-      post.category = { name_category: 'Categoria excluida' }
+      post.category = { name_category: 'Categoria indefinida!' }
     }
   })
 
@@ -209,19 +210,19 @@ router.get('/posts', async (req, res) => {
 })
 
 router.get('/posts/add', async (req, res) => {
-  const categories = await CategoryModel.find({})
+  const categories = await CategoryModel.find({}).sort({ date: 'desc' })
   res.render('admin/postsAdd', { categories })
 })
 
 router.post('/posts/add', async (req, res) => {
   const err = verifyErrorInputFormPost(req)
-  
+
   if (err.length > 0) {
     // Caso exista erros adiciona todos nas variaveis globais
     err.push({
-      message: 'Categoria não foi editada!'
+      message: 'Postagem não foi cadastrada!'
     })
-    // Inserindo erros na variavel global de erros, definida no meu middleware
+    // // Inserindo erros na variavel global de erros, definida no meu middleware
     err.forEach(e => {
       req.flash('err', e)
     })
@@ -255,46 +256,72 @@ router.get('/posts/edit/:id', async (req, res) => {
   const post = await PostModel.findById(id).populate('category')
   const categories = await CategoryModel.find({})
 
+  // Vericiando se a categoria foi ecluida, para exibir ao usuario
   if (post.category == null) {
-    post.category = { name_category: 'Categoria excluida' }
+    post.category = { name_category: 'Categoria indefinida!' }
   }
   
   res.render('admin/postsEdit', { post, categories })
 })
 
 router.post('/posts/edit/:id', async (req, res) => {
-  const err = verifyErrorInputFormPost(req)
-  
-  if (err.length > 0) {
-    // Caso exista erros adiciona todos nas variaveis globais
-    err.push({
-      message: 'Categoria não foi editada!'
-    })
-    // Inserindo erros na variavel global de erros, definida no meu middleware
-    err.forEach(e => {
-      req.flash('err', e)
-    })
-    res.redirect('/admin/posts/edit/' + req.params.id)
+  // Preciso do "edit", para permitir a categoria selecionada possa ser vazia apenas na edição
+  const err = verifyErrorInputFormPost(req, 'edit')
 
-  } else {
-    const id  = req.params.id
-    const idCategory = req.body.category
-    const category = await CategoryModel.findById(idCategory) 
-    
-    post = {
+  if (err.length == 0 && req.body.category == '0') {
+    // Altrando os dados do post, porem a categoria permanece a mesma
+    const id = req.params.id
+    const postEdited = await PostModel.findById(id).populate( 'category' )
+
+    if (postEdited.category == null) {
+      postEdited.category = { name_category: 'Categoria indefinida!' }
+    }
+
+    post = { 
       title: req.body.title,
       description: req.body.description,
       content: req.body.content,
-      category: category
+      category: postEdited.category
     }
-  
+
     await PostModel.findByIdAndUpdate(id, post, { new: true })
       .then(() => {
         req.flash('success', 'Post editado com sucesso!')
         res.redirect('/admin/posts')
       }).catch(err => {
-        req.flash('err', 'Post não foi editado!')
+        res.send('error', err.message)
+      })
+
+  } else if (err.length > 0) {
+    // Caso exista erros nos outros campos do formulario
+    err.push({
+      message: 'Postagem não foi editada!'
+    })
+    // Inserindo erros na variavel global de erros, definida no meu middleware
+    err.forEach( e => {
+      req.flash('err', e)
+    })
+    res.redirect('/admin/posts/edit/' + req.params.id)
+    
+  } else {
+    // Em casos que existem categorias para serem selecionadas no formulario
+    const id = req.params.id
+    const idCategory = req.body.category
+    const categorySelected = await CategoryModel.findById(idCategory)
+    
+    post = {
+      title: req.body.title,
+      description: req.body.description,
+      content: req.body.content,
+      category: categorySelected
+    }
+
+    await PostModel.findByIdAndUpdate(id, post, { new: true })
+      .then(() => {
+        req.flash('success', 'Post editado com sucesso!')
         res.redirect('/admin/posts')
+      }).catch (err => {
+        res.send('error', err.message)
       })
   }
 })
@@ -307,8 +334,8 @@ router.post('/posts/delete/:id', async (req, res) => {
       req.flash('success', `Post ID: ${id} Deletado com sucesso!`)
       res.redirect('/admin/posts')
     })
-    .catch(error => {
-      res.send('error', error.message)
+    .catch(err => {
+      res.send('err', error.message)
     })
 })
 
