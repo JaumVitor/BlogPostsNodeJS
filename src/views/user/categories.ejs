@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../partials/head') %>
+  <body>
+    <%- include('../partials/navbar') %>
+      <%- include('../partials/success') %>
+
+      <div class="wrapper">
+        <div class='list-category'>
+          <h2>Listas de categorias</h2>
+          <a href="/admin/categories/add">
+            <button class="button-create"><p>Criar categoria</p></button>
+          </a>
+        </div>
+        <hr>
+        <ul class="category-description">
+          <% if (category.length > 0) { %> 
+            <% category.forEach((cat) => { %>
+              <li>
+                <div class="header">
+                  <h3><%= cat.name_category %></h3>
+                </div>
+                <p><%= cat.slug %></p>
+                <small><%= cat.date %></p></small>
+              </li>
+            <% }); %>
+          <% } else { %>
+            <li>
+              <p>Não há categorias cadastradas</p>
+            </li>
+          <% } %>
+        </ul>
+      </div>
+
+    <%- include('../partials/footer') %>
+  </body>
+</html>

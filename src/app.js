@@ -4,6 +4,10 @@ const bodyParser = require('body-parser')
 const session = require('express-session')
 const flash = require('connect-flash')
 
+const mongoose = require('mongoose')
+const CategoryModel = require('./database/models/category.model')
+const PostModel = require('./database/models/post.model')
+
 // Usando exports de rotas, para vizualização de endpoints
 const admin = require('./routes/admin')
 
@@ -35,16 +39,24 @@ app.use('/', (req, res, next) => {
   next()
 })
 
-app.get('/', (req, res) => {
-  req.flash('flash', 'Testando outro valor')
-  // console.log(res.locals.flashUse)
-  res.send('teste')
+app.get('/', async (req, res) => {
+  const posts = await PostModel.find( ).sort({ date: 'desc' })
+    .populate('category')
+
+  posts.forEach(post => {
+    if (post.category == null) {
+      post.category = {
+        name_category: 'Sem categoria'
+      }
+    }
+  })
+  console.log(posts)
+  //Fazer validação para categorias vazias
+  res.render('index', { posts })
 })
 
-// Definindo os endpoints da aplicação
-app.post('/', (req, res) => {
-  //  { message: 'teste', outro: 1 })
-  // res.redirect('/')
+app.get('/categories', async (req, res) => {
+  
 })
 
 app.use('/admin', admin)

@@ -5,7 +5,7 @@
   --secundary-color: rgb(161, 16, 161);
   --background-category: rgba(115, 74, 143, 1);
   --border-category: rgb(181, 143, 219);
-  --color-button: #07bb58;
+  --color-button: #18bb25;
   --button-delete-color: #d31f1f;
 }
 
@@ -13,24 +13,25 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
 }
 
 body,
 html {
   font-size: 1.6rem;
-  font-family: 'Poppins', sans-serif;
   width: 100%;
   height: 100vh;
 }
 
 .wrapper {
-  max-width: 50rem;
+  max-width: 50.5rem;
   margin: 0 auto;
   position: relative;
 }
 
 a {
   text-decoration: none;
+  color: white;
 }
 
 ul {
@@ -46,10 +47,66 @@ hr {
 
 li {
   list-style-type: none;
-  color: white;
 }
 
-.nav-bar {
+.header-home {
+  color: var(--border-category);
+  margin-bottom: 2rem;
+}
+
+.header-home::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 3px;
+  background-color: var(--color-button);
+  margin-top: 1rem;
+}
+
+.header-home p {
+  color: white;
+  font-size: 1.4rem;
+}
+
+.header-home .nav-bar {
+  background: transparent;
+  margin: 0;
+}
+
+.post {
+  margin-bottom: 1rem;
+}
+
+.post h3 {
+  color: var(--primary-color)
+}
+
+.post .description{
+  color: initial;
+  margin-bottom: 2rem;
+}
+
+.post a {
+  color: var(--color-button);
+}
+
+.view-more {
+  display: flex;
+  align-items: center;  
+  gap: 0.5rem;
+  
+  font-size: 1.3rem;
+  border-radius: .5rem;
+}
+
+.footer-post {
+  font-size: 1.3rem; 
+  display: flex; 
+  justify-content: space-between;  
+}
+
+.nav-bar,
+.header-home  {
   background: var(--purple-bg);
   background-image: radial-gradient(
     circle,
@@ -58,6 +115,9 @@ li {
     rgba(41, 7, 66, 1) 64%,
     rgba(115, 74, 143, 1) 146%
   );
+}
+
+.nav-bar {
   width: 100%;
   padding: 2rem;
   margin-bottom: 3rem;
@@ -73,6 +133,34 @@ li {
   justify-content: space-between;
 }
 
+main {
+  padding-top: 2rem;
+}
+
+button.button-register,
+.login {
+  margin: 2rem 0 2rem;
+
+  background: var(--color-button);
+  border: none;
+  border-radius: 0.5rem;
+  color: white;
+  padding: .8rem 1.2rem;
+
+  text-transform: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.login {
+  background: var(--background-category);
+  margin: 0;
+}
+
+.login a {
+  padding: .5rem 1.5rem;
+}
+
 .button-add {
   margin-top: 2rem;
 }
@@ -84,7 +172,9 @@ li {
 .button-create,
 .button-add,
 .button-edit,
-.button-delete {
+.button-delete,
+.button-register,
+.login {
   position: relative;
   padding: 1rem;
   border: 1px solid rgb(19, 167, 19);
@@ -105,7 +195,9 @@ li {
 .button-create::before,
 .button-add::before,
 .button-edit::before,
-.button-delete::before {
+.button-delete::before,
+.button-register::before,
+.login::before {
   content: '';
   position: absolute;
   top: 0;
@@ -122,18 +214,22 @@ li {
 .button-create:hover::before,
 .button-add:hover::before,
 .button-edit:hover::before,
-.button-delete:hover::before {
+.button-delete:hover::before,
+.button-register:hover::before,
+.login:hover::before {
   width: 150%;
 }
 
-.button-edit {
+.button-edit,
+.login {
   padding: 0.5rem;
   background: var(--background-category);
   border: none;
   text-transform: capitalize;
 }
 
-.button-edit::before {
+.button-edit::before,
+.login::before {
   background: var(--primary-color-light);
   transition: width 0.5s;
 }
@@ -154,6 +250,10 @@ li {
   display: flex;
   justify-content: space-between;
   gap: 0.5rem;
+}
+
+.button-view-more {
+  border: none; 
 }
 
 /* Formulario */
@@ -267,7 +367,8 @@ input {
 }
 
 .category-editing,
-.post-editing {
+.post-editing,
+.post {
   background: rgb(244, 241, 247);
   padding: 2rem;
   border-radius: 0.5rem;
