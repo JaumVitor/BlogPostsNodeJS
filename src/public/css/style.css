@@ -24,7 +24,7 @@ html {
 }
 
 .wrapper {
-  max-width: 50.5rem;
+  max-width: 90rem;
   margin: 0 auto;
   position: relative;
 }
@@ -51,7 +51,10 @@ li {
 
 .header-home {
   color: var(--border-category);
-  margin-bottom: 2rem;
+}
+
+.header-home img {
+  max-width: 20rem;
 }
 
 .header-home::after {
@@ -63,14 +66,36 @@ li {
   margin-top: 1rem;
 }
 
+.header-home h1 {
+  font-size: 3.6rem;
+}
+
 .header-home p {
   color: white;
-  font-size: 1.4rem;
+  font-size: 1.8rem;
 }
 
 .header-home .nav-bar {
   background: transparent;
   margin: 0;
+}
+
+.header-home-content {
+  display: flex; 
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-home img {
+  transform: translateY(1rem);
+}
+
+.posts-home {
+  display: grid; 
+  grid-template-columns: 1fr 1fr;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .post {
@@ -86,11 +111,7 @@ li {
   margin-bottom: 2rem;
 }
 
-.post a {
-  color: var(--color-button);
-}
-
-.view-more {
+a.view-more {
   display: flex;
   align-items: center;  
   gap: 0.5rem;
@@ -99,10 +120,32 @@ li {
   border-radius: .5rem;
 }
 
+a.view-more {
+  color: var(--color-button);
+  font-weight: bold;
+}
+
+.button-view-more {
+  display: flex;
+  justify-content: space-between;
+}
+
 .footer-post {
   font-size: 1.3rem; 
   display: flex; 
   justify-content: space-between;  
+}
+
+.footer-post-home {
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.footer-post-home a {
+  font-size: 1.2rem;
+  color: var(--color-button)
 }
 
 .nav-bar,
@@ -134,7 +177,7 @@ li {
 }
 
 main {
-  padding-top: 2rem;
+  padding-top: 3rem;
 }
 
 button.button-register,
@@ -310,9 +353,9 @@ span {
 }
 
 small {
-  color: var(--primary-color-light);
-  text-shadow: 1px 1px 2px var(--primary-color);
-  font-size: 1.2rem;
+  color: var(--primary-color);
+  font-weight: bold;
+  font-size: 1.3rem;
 }
 
 small.editing {
@@ -397,7 +440,8 @@ input {
 .category-editing,
 .post-editing,
 .post,
-.post-reveal {
+.post-reveal,
+.post-home {
   background: rgb(244, 241, 247);
   padding: 2rem;
   border-radius: 0.5rem;
@@ -478,11 +522,71 @@ footer {
   padding-block: 4rem;
 }
 
-.post-reveal h2 {
+.posts-main-home {
+  display: grid;
+  grid-template-areas: "A B"
+                       "A D"
+                       "A E";
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 0fr 1fr;
+  
+  column-gap: 6rem;
+}
+
+.post-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.post-main h3 {
+  margin-bottom: 1rem;
+}
+
+.post-main p {
+  margin-bottom: 1rem;
+}
+
+.post-main:nth-child(1) {
+  grid-area: A;
+}
+
+.post-main:nth-child(2) {
+  grid-area: B;
+}
+
+.post-main:nth-child(3) {
+  grid-area: D;
+}
+
+.post-main:nth-child(4) {
+  grid-area: E;
+}
+
+.post-main img {
+
+  max-width: 40rem;
+  display: block;
+  margin: 1rem 0 1rem;
+}
+
+.post-main .view-more img {
+  width: initial;
+  margin: 0;
+}
+
+.recent-posts {
+  margin-top: 4rem; 
+}
+
+.post-reveal h2,
+.post-home,
+.post-main h3 {
   color: var(--primary-color)
 }
 
-.post-reveal p {
+.post-reveal p,
+.post-home p{
   color: initial;
 }
 

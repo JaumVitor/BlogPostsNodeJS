@@ -1,5 +1,4 @@
-<a class="view-more" href="/post/<%= post.id %>">Ver mais
-  <svg 
+<svg 
     width="15" 
     height="24" 
     viewBox="0 0 24 24" 
@@ -20,4 +19,3 @@
       stroke-linejoin="round"
       />
   </svg>
-</a>

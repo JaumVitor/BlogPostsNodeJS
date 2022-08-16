@@ -5,41 +5,101 @@
     <div class="header-home">
       <%- include('partials/navbar') %>
       <div class="wrapper">
-        <h1>Bem vindo ao TheBlog Node</h1>
-        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Nesciunt nihil reiciendis, veritatis assumenda quasi eaque repudiandae.</p>
-        
-        <button class="button-register">
-          <a href="#">Cadastre-se</a>
-        </button>
+        <div class="header-home-content">
+          <div>
+            <h1>Bem vindo ao TheBlog Node</h1>
+            <p>Um blog bem simples, criado para praticar o NodeJS, express + MongoDB</p>
+            <button class="button-register">
+              <a href="#">Cadastre-se</a>
+            </button>
+          </div>
+          <img src="/images/foto.png" alt="Mulher com blusa verde">
+        </div>
       </div>
     </div>
+    
+    <main>
+      <div class="wrapper">
+        <h2>Postagens principais</h2>
+        <hr>
+        <div class="posts-main-home">
+          <div class="post-main">
+            <img src="/images/post-1.png" alt="Homem usando notbook">
+            <small>Jan 07, 2021</small>
+            <h3>Conheça mais sobre o TheBlog</h3>
 
-    <div class="wrapper">
-      <h2>Postagens recentes</h2>
-      <hr/>
-      <% if (posts.length> 0) { %>
-        <% posts.forEach((post)=> { %>
-          <div class="post">
-            <small><%= post.date %></small>
-            <div class="header">
-              <h3><%= post.title %></h3>
-            </div>
-            
-            <p class="description"><%= post.description %></p>
-            <hr>
-            <div class="footer-post">
-              <p >Categoria: <%= post.category.name_category %></p>
+            <p>Caso queira conhecer mais sobre o TheBlog visite o meu perfil do github, e veja a descrição do readme.</p>
 
-              <%- include('partials/footerPost', { post })%>
+            <div class="button-view-more">
+              <a
+                class="view-more"
+                href="https://github.com/JaumVitor/BlogPostsNodeJS"
+                target="_blank">Ver repositório
+                <img src="/images/arrow-right.svg" alt="seta apontando para direita">
+              </a>
             </div>
           </div>
-        <% }); %>
-      <%} else { %>
-        <div class="post">
-          <p>Não há postagens cadastradas</p>
+          <div class="post-main">
+            <small>Nov 21, 2021</small>
+            <h3>NFTs Rocket</h3>
+
+            <p>Se quiser ver a home page NFTs, proposta pelos desafios da rocketseat, e onde disponibilizam o layout no figma, acesse o repositorio.</p>
+
+            <div class="button-view-more">
+              <a
+                class="view-more"
+                href="https://jaumvitor.github.io/NFTsRockets/"
+                target="_blank">Ver repositório
+                <img src="/images/arrow-right.svg" alt="seta apontando para direita">
+              </a>
+            </div>
+          </div>
+          <hr>
+          <div class="post-main">
+            <small>Fer 15, 2022</small>
+            <h3>Conheça o TheDoctors</h3>
+
+            <p>Se quiser ver outra home page TheDoctors realizada na NLW return da rocketseat</p>
+
+            <div class="button-view-more">
+              <a
+                class="view-more"
+                href="https://jaumvitor.github.io/NLW-return-/"
+                target="_blank">Ver repositório
+                <img src="/images/arrow-right.svg" alt="seta apontando para direita">
+              </a>
+            </div>
+          </div>
         </div>
-      <%} %>
-    </div>
+
+        <div class="recent-posts">
+          <h2>Postagens recentes</h2>
+          <hr/>
+          <div class="posts-home">
+          <% if (posts.length> 0) { %>
+            <% posts.forEach((post)=> { %>
+              <div class="post-home">
+                <small><%= dateFormated %></small>
+                <div class="header">
+                  <h3><%= post.title %></h3>
+                </div>
+                <p class="description"><%= post.description %></p>
+                <hr>
+                <div class="footer-post-home">
+                  <p><%= post.category.name_category %></p>
+                  <%- include('partials/footerPost', { post })%>
+                </div>
+              </div>
+            <% }); %>
+          </div>
+          <%} else { %>
+            <div class="post-home">
+              <p>Não há postagens cadastradas</p>
+            </div>
+          <%} %>
+        </div>
+      </div>
+    </main>
   </body>
 
   <%- include('./partials/footer') %>

@@ -40,17 +40,30 @@ app.use('/', (req, res, next) => {
 })
 
 app.get('/', async (req, res) => {
-  const posts = await PostModel.find().sort({ date: 'desc' })
-    .populate('category')
+  const months = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul","Ago","Set","Out","Nov","Dez"];
 
-  posts.forEach(post => {
-    if (post.category == null) {
-      post.category = {
-        name_category: 'Sem categoria'
-      }
-    }
-  })
-  res.render('index', { posts })
+  const posts = await PostModel.find()
+    .limit(4)
+    .sort({ date: 'desc' })
+    .populate('category')
+    .then(posts => {
+      let dateFormated = ''
+      posts.forEach(post => {
+        dateFormated = 
+        (months[post.date.getMonth()]) + ' ' +
+        post.date.getDate() + ', ' +
+        post.date.getFullYear()
+
+        if (post.category == null) {
+          post.category = {
+            name_category: 'Sem categoria'
+          }
+        }
+      })
+      res.render('index', { posts, dateFormated })
+    }).catch(err => {
+      res.send('erro' + err)
+    })
 })
 
 app.get('/categories', async (req, res) => {
@@ -62,29 +75,30 @@ app.get('/post/:id', async (req, res) => {
   const id = req.params.id
   const post = await PostModel.findById(id)
     .populate('category')
-    .then( post => {
+    .then(post => {
       if (post.category == null) {
         post.category = { name_category: 'Sem categoria' }
       }
       res.render('user/postReveal', { post })
-    }).catch(err => {
+    })
+    .catch(err => {
       res.send('Erro ao buscar postagem' + err)
     })
-    
 })
 
-app.get('/posts', async(req, res) => {
+app.get('/posts', async (req, res) => {
   await PostModel.find({})
     .sort({ date: 'desc' })
     .populate('category')
-    .then( posts => {
+    .then(posts => {
       posts.forEach(post => {
         if (post.category == null) {
-          post.category = { name_category: 'Sem categoria'}
+          post.category = { name_category: 'Sem categoria' }
         }
       })
       res.render('user/postsRevealAll', { posts })
-    }).catch((err)=>{
+    })
+    .catch(err => {
       res.send('Erro ao listar os posts' + err)
     })
 })
@@ -93,22 +107,26 @@ app.get('/posts/:id', async (req, res) => {
   // Encontrar a categoria pelo id, depois encontrar o post pelo id da categoria
   const id = req.params.id
   await CategoryModel.findById(id)
-    .then( async category => {
+    .then(async category => {
       // Caso encontre a categoria pelo id, inicia a busca da categoria em uma postagem
       await PostModel.find({ category: category._id })
         .populate('category')
-        .then((posts) => {
+        .then(posts => {
           if (posts.length > 0) {
             // Caso exista categoria cadastrada em um post
             res.render('user/postsByCategory', { posts })
-          }else {
-            res.locals.err = req.flash('err', { message: 'Não existe postagens cadastradas nessa categoria'})
+          } else {
+            res.locals.err = req.flash('err', {
+              message: 'Não existe postagens cadastradas nessa categoria'
+            })
             res.redirect('/categories')
           }
-        }).catch(err => {
+        })
+        .catch(err => {
           console.log('Erro ao buscar postagem: ' + err.message)
         })
-    }).catch(err => {
+    })
+    .catch(err => {
       console.log(err)
     })
 })
