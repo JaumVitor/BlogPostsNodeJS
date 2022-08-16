@@ -58,16 +58,36 @@ app.get('/categories', async (req, res) => {
   res.render('user/categories', { category })
 })
 
-// app.get('/posts', async(req, res) => {
-//   const posts = await PostModel.find({})
-//     .sort({ date: 'desc' })
-//     .populate('category')
-//     .then( posts =>{
-      
-//     }).catch((err)=>{
-//       console.log(err)
-//     })
-// })
+app.get('/post/:id', async (req, res) => {
+  const id = req.params.id
+  const post = await PostModel.findById(id)
+    .populate('category')
+    .then( post => {
+      if (post.category == null) {
+        post.category = { name_category: 'Sem categoria' }
+      }
+      res.render('user/postReveal', { post })
+    }).catch(err => {
+      res.send('Erro ao buscar postagem' + err)
+    })
+    
+})
+
+app.get('/posts', async(req, res) => {
+  await PostModel.find({})
+    .sort({ date: 'desc' })
+    .populate('category')
+    .then( posts => {
+      posts.forEach(post => {
+        if (post.category == null) {
+          post.category = { name_category: 'Sem categoria'}
+        }
+      })
+      res.render('user/postsRevealAll', { posts })
+    }).catch((err)=>{
+      res.send('Erro ao listar os posts' + err)
+    })
+})
 
 app.get('/posts/:id', async (req, res) => {
   // Encontrar a categoria pelo id, depois encontrar o post pelo id da categoria
