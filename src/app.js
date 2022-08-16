@@ -40,7 +40,7 @@ app.use('/', (req, res, next) => {
 })
 
 app.get('/', async (req, res) => {
-  const posts = await PostModel.find( ).sort({ date: 'desc' })
+  const posts = await PostModel.find().sort({ date: 'desc' })
     .populate('category')
 
   posts.forEach(post => {
@@ -50,13 +50,47 @@ app.get('/', async (req, res) => {
       }
     }
   })
-  console.log(posts)
-  //Fazer validação para categorias vazias
   res.render('index', { posts })
 })
 
 app.get('/categories', async (req, res) => {
-  
+  const category = await CategoryModel.find()
+  res.render('user/categories', { category })
+})
+
+// app.get('/posts', async(req, res) => {
+//   const posts = await PostModel.find({})
+//     .sort({ date: 'desc' })
+//     .populate('category')
+//     .then( posts =>{
+      
+//     }).catch((err)=>{
+//       console.log(err)
+//     })
+// })
+
+app.get('/posts/:id', async (req, res) => {
+  // Encontrar a categoria pelo id, depois encontrar o post pelo id da categoria
+  const id = req.params.id
+  await CategoryModel.findById(id)
+    .then( async category => {
+      // Caso encontre a categoria pelo id, inicia a busca da categoria em uma postagem
+      await PostModel.find({ category: category._id })
+        .populate('category')
+        .then((posts) => {
+          if (posts.length > 0) {
+            // Caso exista categoria cadastrada em um post
+            res.render('user/postsByCategory', { posts })
+          }else {
+            res.locals.err = req.flash('err', { message: 'Não existe postagens cadastradas nessa categoria'})
+            res.redirect('/categories')
+          }
+        }).catch(err => {
+          console.log('Erro ao buscar postagem: ' + err.message)
+        })
+    }).catch(err => {
+      console.log(err)
+    })
 })
 
 app.use('/admin', admin)

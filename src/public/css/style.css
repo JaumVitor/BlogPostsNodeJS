@@ -304,6 +304,11 @@ select {
   outline: none;
 }
 
+span {
+  color: var(--primary-color);
+  margin-left: 1rem;
+}
+
 small {
   color: var(--primary-color-light);
   text-shadow: 1px 1px 2px var(--primary-color);
@@ -331,12 +336,35 @@ input {
   box-shadow: 1px 1px 2px #200455;
 }
 
-.list-category,
+.header-list-category,
 .list-posts {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
+}
+
+.list-category {
+  display: flex;
+  flex-direction: column;
+  gap:0;
+}
+
+.list-category .container {
+  display: flex;
+}
+
+.list-category a {
+  display: flex; 
+  align-items: center;
+  gap: 1rem;
+  color: var(--primary-color);
+}
+
+.list-category a:hover {
+  color: var(--primary-color-light);
+  font-weight: bold;
+  cursor: pointer;
 }
 
 /* Imprimindo listas de categorias  */
